@@ -1,0 +1,50 @@
+﻿public class UsersRepository: IUsersRepository
+{
+    private readonly string _connectionString;
+    public UsersRepository(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    public User GetUser(int id)
+    {
+        // Here you are free to do whatever data access code you like
+        // You can invoke direct SQL queries, stored procedures, whatever 
+
+        using (var conn = new SqlConnection(_connectionString))
+        using (var cmd = conn.CreateCommand())
+        {
+            conn.Open();
+            cmd.CommandText = "SELECT id, name FROM users WHERE id = @id";
+            cmd.Parameters.AddWithValue("@id", id);
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (!reader.Read())
+                {
+                    return null;
+                }
+                return new User
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("id")),
+                    Name = reader.GetString(reader.GetOrdinal("name")),
+                }
+            }
+        }
+    }
+}
+and then your controller could use this repository:
+
+public class UsersController: Controller
+{
+    private readonly IUsersRepository _repository;
+    public UsersController(IUsersRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public ActionResult Index(int id)
+    {
+        var model = _repository.GetUser(id);
+        return View(model);
+    }
+}

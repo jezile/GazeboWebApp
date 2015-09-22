@@ -1,0 +1,162 @@
+﻿@model GazebosWebApp.Models.CurrencyModel
+@{
+    ViewBag.Title = "Currency App";
+    Layout = "~/Views/Shared/_LayoutGazebosMain.cshtml";
+}
+
+<div id="result">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-header">@ViewBag.Title <small>Currency converter</small></h1>
+                <ol class="breadcrumb">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="active"> Currency App</li>
+                </ol>
+            </div>
+        </div>
+
+        @*<h4>@Html.RadioButton("currencyRadio", "GBPPLN", true, new { @id = "GBPPLN" }) <label for="GBPPLN">GBP <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> PLN</label></h4>
+            <h4>@Html.RadioButton("currencyRadio", "PLNGBP", false, new { @id = "PLNGBP" }) <label for="PLNGBP">PLN <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> GBP</label></h4>*@
+
+        @*@using (Ajax.BeginForm(new AjaxOptions { UpdateTargetId = "result" }))*@
+        @using (Html.BeginForm("Index", "Currency", FormMethod.Post, new { id = "my-form" }))
+        {
+            <div class="row">
+                <div class="col-md-3">
+                    @Html.DropDownList("CurrencyFrom", new List<SelectListItem>
+                    {
+                        new SelectListItem { Text ="GBP - British Pound", Value = "GBP", Selected = true },
+                        new SelectListItem { Text ="PLN - Polish Złoty", Value = "PLN" },
+                        new SelectListItem { Text ="--------", Value = "" },
+                        new SelectListItem { Text ="AUD - Australian Dollar", Value = "AUD" },
+                        new SelectListItem { Text ="BGN - Bulgarian Lev", Value = "BGN" },
+                        new SelectListItem { Text ="BRL - Brazilian Real", Value = "BRL" },
+                        new SelectListItem { Text ="CAD - Canadian Dollar", Value = "CAD" },
+                        new SelectListItem { Text ="CHF - Swiss Franc", Value = "CHF" },
+                        new SelectListItem { Text ="CZK - Czech Koruna", Value = "CZK" },
+                        new SelectListItem { Text ="DKK - Danish Krone", Value = "DKK" },
+                        new SelectListItem { Text ="EUR - Euro", Value = "EUR" },
+                        new SelectListItem { Text ="HKD - Hong Kong Dollar", Value = "HKD" },
+                        new SelectListItem { Text ="HRK - Croatian Kuna", Value = "HRK" },
+                        new SelectListItem { Text ="HUF - Hungarian Forint", Value = "HUF" },
+                        new SelectListItem { Text ="ILS - New Israeli Sheqel", Value = "ILS" },
+                        new SelectListItem { Text ="ISK - Iceland Krona", Value = "ISK" },
+                        new SelectListItem { Text ="JPY - Japan Yen", Value = "JPY" },
+                        new SelectListItem { Text ="KRW - Korean Won", Value = "KRW" },
+                        new SelectListItem { Text ="MXN - Mexican Peso", Value = "MXN" },
+                        new SelectListItem { Text ="NOK - Norwegian Krone", Value = "NOK" },
+                        new SelectListItem { Text ="NZD - New Zealand Dollar", Value = "NZD" },
+                        new SelectListItem { Text ="PHP - Philippine Peso", Value = "PHP" },
+                        new SelectListItem { Text ="RON - Romanian Leu", Value = "RON" },
+                        new SelectListItem { Text ="RUB - Russian Ruble", Value = "RUB" },
+                        new SelectListItem { Text ="SEK - Swedish Krona", Value = "SEK" },
+                        new SelectListItem { Text ="SGD - Sudanese Pound", Value = "SGD" },
+                        new SelectListItem { Text ="THB - Thai Baht", Value = "THB" },
+                        new SelectListItem { Text ="TRY - Turkish Lira", Value = "TRY" },
+                        new SelectListItem { Text ="USD - US Dollar", Value = "USD" },
+                        new SelectListItem { Text ="ZAR - South African Rand", Value = "ZAR" }
+                   }, null, new { @class = "form-control" })
+                </div>
+
+                <div class="col-md-1">
+                    <h5><span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></h5>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.DropDownList("CurrencyTo", new List<SelectListItem>
+                    {
+                        new SelectListItem { Text ="GBP - British Pound", Value = "GBP" },
+                        new SelectListItem { Text ="PLN - Polish Złoty", Value = "PLN", Selected = true },
+                        new SelectListItem { Text ="--------", Value = "" },
+                        new SelectListItem { Text ="AUD - Australian Dollar", Value = "AUD" },
+                        new SelectListItem { Text ="BGN - Bulgarian Lev", Value = "BGN" },
+                        new SelectListItem { Text ="BRL - Brazilian Real", Value = "BRL" },
+                        new SelectListItem { Text ="CAD - Canadian Dollar", Value = "CAD" },
+                        new SelectListItem { Text ="CHF - Swiss Franc", Value = "CHF" },
+                        new SelectListItem { Text ="CZK - Czech Koruna", Value = "CZK" },
+                        new SelectListItem { Text ="DKK - Danish Krone", Value = "DKK" },
+                        new SelectListItem { Text ="EUR - Euro", Value = "EUR" },
+                        new SelectListItem { Text ="HKD - Hong Kong Dollar", Value = "HKD" },
+                        new SelectListItem { Text ="HRK - Croatian Kuna", Value = "HRK" },
+                        new SelectListItem { Text ="HUF - Hungarian Forint", Value = "HUF" },
+                        new SelectListItem { Text ="ILS - New Israeli Sheqel", Value = "ILS" },
+                        new SelectListItem { Text ="ISK - Iceland Krona", Value = "ISK" },
+                        new SelectListItem { Text ="JPY - Japan Yen", Value = "JPY" },
+                        new SelectListItem { Text ="KRW - Korean Won", Value = "KRW" },
+                        new SelectListItem { Text ="MXN - Mexican Peso", Value = "MXN" },
+                        new SelectListItem { Text ="NOK - Norwegian Krone", Value = "NOK" },
+                        new SelectListItem { Text ="NZD - New Zealand Dollar", Value = "NZD" },
+                        new SelectListItem { Text ="PHP - Philippine Peso", Value = "PHP" },
+                        new SelectListItem { Text ="RON - Romanian Leu", Value = "RON" },
+                        new SelectListItem { Text ="RUB - Russian Ruble", Value = "RUB" },
+                        new SelectListItem { Text ="SEK - Swedish Krona", Value = "SEK" },
+                        new SelectListItem { Text ="SGD - Sudanese Pound", Value = "SGD" },
+                        new SelectListItem { Text ="THB - Thai Baht", Value = "THB" },
+                        new SelectListItem { Text ="TRY - Turkish Lira", Value = "TRY" },
+                        new SelectListItem { Text ="USD - US Dollar", Value = "USD" },
+                        new SelectListItem { Text ="ZAR - South African Rand", Value = "ZAR" }
+                   }, null, new { @class = "form-control" })
+                </div>
+                <div class="col-md-5">
+
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="input">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="Enter amount to convert..." name="amount" id="amount" required>
+                        @*@Html.ValidationMessage(Model, "Please enter amount", new { @class = "text-danger" })*@
+                    </div>
+                    <div class="col-md-6">
+                        <span class="input-btn">
+                            <button class="btn btn-primary" type="submit">Convert</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        }
+        <br />
+
+        <div class="row">
+            <div class="col-md-12">
+                @if (Model != null)
+                {
+                    if (Model.Error == "")
+                    {
+                        <h3><span class="glyphicon glyphicon-piggy-bank" aria-hidden="false"></span> Amount : <b> @Html.DisplayFor(model => model.Amount) @Model.Name.Substring(0, 3)</b></h3>
+                        <h3><span class="glyphicon glyphicon-credit-card" aria-hidden="false"></span> Rate : <b>1 @Model.Name.Substring(0, 3) = @Html.DisplayFor(model => model.Rate) @Model.Name.Substring(4, 3)</b></h3>
+                        <h3><span class="glyphicon glyphicon-thumbs-up" aria-hidden="false"></span> Total : <b>@Html.DisplayFor(model => model.Total) @Model.Name.Substring(4, 3)</b></h3>
+                    }
+                    else
+                    {
+                        @Html.Partial("_ErrorSectionPartial", Model.Error)
+                    }
+                }
+            </div>
+        </div>
+        @Html.Partial("_FooterPartial")
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+
+            $('#my-form').on("submit", function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (data) {
+                        //$("#myForm").html('');
+                        $("#result").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+}
